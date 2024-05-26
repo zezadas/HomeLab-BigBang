@@ -1,0 +1,84 @@
+#cloud-config
+#https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
+#https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v2.html
+#https://cloudinit.readthedocs.io/en/latest/reference/modules.html#
+autoinstall:
+  version: 1
+
+#  network:
+#    version: 2
+#    ethernets:
+#      eth0:
+#        dhcp4: yes
+
+  shutdown: poweroff
+
+  timezone: Europe/Lisbon
+
+  keyboard:
+    layout: pt
+
+
+  apt:
+    preserve_sources_list: false
+    mirror-selection:
+      primary:
+        - uri: "https://glua.ua.pt/pub/ubuntu"
+#    fallback: abort
+    geoip: false
+
+
+  identity:
+    password: <PASSWD_HASH_HERE>  #123456 #mkpasswd --method=SHA-512 --rounds=4096
+    username: ubuntu
+    hostname: gold-ubuntu-jammy
+
+  ssh:
+    allow-pw: false
+    authorized-keys: 
+      - ssh-rsa <RSA_HERE>
+    install-server: yes
+
+
+  storage:
+    layout:
+      name: lvm
+    swap:
+      size: 0
+
+
+  user-data:
+    package_update: true
+    ssh_genkeytypes: [ed25519] # ssh-keygen -t ed25519
+    disable_root: true
+#    disable_root_opts: no-port-forwarding,no-agent-forwarding,no-X11-forwarding
+    ntp:
+      enabled: true
+      ntp_client: chrony
+      pools: [0.pt.pool.ntp.org, 2.europe.pool.ntp.org, 0.europe.pool.ntp.org]
+    runcmd:
+      - [ cloud-init, clean  ]
+      - [ cloud-init, init, --local  ]
+
+
+  packages:
+    - xe-guest-utilities # guest tools for xcp-ng hypervisor
+    - cloud-initramfs-growroot # resize images on boot
+    - chrony # cloud-init ntp
+    - git
+    - vim
+    - htop
+    - tmux
+#    - ansible
+
+  updates: all
+
+  late-commands:
+    - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/sysuser # allow sudo without password
+    - sed -i -e '$aAllowUsers ubuntu' /target/etc/ssh/sshd_config
+    #- curtin in-target --target /target update-grub2
+    #
+  
+
+#TODO: config systemd journaling expire time
+#TODO: change bios order

@@ -1,0 +1,37 @@
+#passar os gitclones para scripts
+services:
+#  bootstrap:
+#    build: ./bootstrap
+#    volumes:
+#      - ./data:/output
+
+  builder: #https://github.com/netbootxyz/docker-builder
+    image: ghcr.io/netbootxyz/builder:latest
+    build: ./data/sources/docker-builder
+
+  localbuild: #https://github.com/netbootxyz/netboot.xyz/
+    build: ./data/sources/netboot.xyz
+    volumes:
+      - ./data/config/menus:/buildout
+
+  netbootxyz-webapp: #https://github.com/netbootxyz/webapp
+    build: ./data/sources/webapp 
+    volumes:
+      - ./data/config:/config
+      - ./data/assets:/assets #optional
+    ports:
+      - "8080:80"
+      - "3000:3000"
+      - "69:69/udp"
+
+  dhcpd:
+    build: ./data/sources/docker-dhcpd
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./data/dhcpd:/data
+    network_mode: "host"
+    command: eth1
+    restart: unless-stopped

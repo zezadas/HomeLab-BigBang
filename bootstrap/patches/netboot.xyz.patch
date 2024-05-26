@@ -1,0 +1,25 @@
+diff --git a/docker-build-root/dumper.sh b/docker-build-root/dumper.sh
+index 1018bd54..89feb7ca 100755
+--- a/docker-build-root/dumper.sh
++++ b/docker-build-root/dumper.sh
+@@ -6,7 +6,12 @@ if [ -d /buildout ]; then
+   if [ `find /buildout -prune -empty 2>/dev/null` ]; then
+     /bin/mkdir -p /buildout/buildout
+     /bin/cp -r /mnt/* /buildout/buildout/
++    /bin/mv /buildout/buildout/ipxe/* /buildout/buildout/
++    /bin/rmdir /buildout/buildout/ipxe/
++    /bin/cp -r /buildout/buildout/* /buildout/
+     /bin/chmod 777 -R /buildout/buildout
++    /bin/mv /buildout/buildout/ /buildout/remote
++    /bin/rm /buildout/local-vars.ipxe
+   # match the ownership of the first file we see
+   else
+     PERMS=`/usr/bin/find /buildout/* -print -quit |xargs stat -c "%u:%g"`
+@@ -17,4 +22,6 @@ if [ -d /buildout ]; then
+ else
+   /bin/echo "/buildout not found exiting"  
+   exit 1
+-fi  
++fi 
++
++

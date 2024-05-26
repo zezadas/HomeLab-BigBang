@@ -1,0 +1,22 @@
+#!ipxe
+
+:start
+
+set base_url        http://172.03.13.1:8080
+set kern_initr_url  ${base_url}/casper
+set kernel_url      ${kern_initr_url}/vmlinuz
+set initrd_url      ${kern_initr_url}/initrd
+set ubuntu_iso_url  ${base_url}/ubuntu-22.04.4-live-server-amd64.iso
+set autoinstall_url ${base_url}/autoinstall.yaml
+
+set netboot_params initrd=initrd.magic ${cmdline} autoinstall cloud-config-url=${autoinstall_url} ip=dhcp url=${ubuntu_iso_url}
+
+kernel ${kernel_url} root=/dev/ram0 ramdisk_size=8388608 ${netboot_params}
+initrd ${initrd_url}
+
+echo MD5sums:
+md5sum vmlinuz initrd
+
+boot
+
+

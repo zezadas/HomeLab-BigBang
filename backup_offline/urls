@@ -1,0 +1,5 @@
+wget https://github.com/netbootxyz/docker-builder/archive/refs/heads/main.zip
+wget https://github.com/netbootxyz/netboot.xyz/archive/refs/tags/2.0.79.zip
+wget https://github.com/netbootxyz/webapp/archive/refs/tags/0.7.1.zip
+wget https://github.com/networkboot/docker-dhcpd/archive/refs/tags/v1.3.0.zip
+wget https://glua.ua.pt/pub/ubuntu-releases/22.04.4/ubuntu-22.04.4-live-server-amd64.iso

@@ -1,0 +1,9 @@
+diff --git a/Dockerfile b/Dockerfile
+index 61c4905..4424a43 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -28,3 +28,4 @@ RUN \
+       toilet
+ 
+ RUN pipx install ansible==${ANSIBLE_VERSION}
++ENV PATH=/root/.local/share/pipx/venvs/ansible/bin/:$PATH
