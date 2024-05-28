@@ -29,14 +29,14 @@ autoinstall:
 
 
   identity:
-    password: <PASSWD_HASH_HERE>  #123456 #mkpasswd --method=SHA-512 --rounds=4096
+    password: #HASHED_PASSWORD_HERE#
     username: ubuntu
     hostname: gold-ubuntu-jammy
 
   ssh:
     allow-pw: false
     authorized-keys: 
-      - ssh-rsa <RSA_HERE>
+      - #AUTHORIZED_KEY_HERE#
     install-server: yes
 
 
@@ -81,4 +81,3 @@ autoinstall:
   
 
 #TODO: config systemd journaling expire time
-#TODO: change bios order
