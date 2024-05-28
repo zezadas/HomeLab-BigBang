@@ -1,0 +1,4 @@
+PXE_NETIF=eth1
+INT_NETIF=eth0
+AUTHORIZED_KEY='ssh-rsa ...'
+HASHED_PASSWORD='$x$y$zzzz...' #mkpasswd --method=SHA-512 --rounds=4096
